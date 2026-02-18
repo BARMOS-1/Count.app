@@ -156,7 +156,7 @@ const App = () => {
             <Button modifier="quiet" onClick={() => handleEdit(item)} style={{ color: isEditing ? '#ccc' : '#f0ad4e', padding: '0 8px' }} disabled={isEditing}>
               <Icon icon="md-edit" style={{ fontSize: '22px' }} />
             </Button>
-            <Button modifier="quiet" onClick={() => handleDelete(item.rowIdx)} style={{ color: '#e91e63', padding: '0 8px' }}>
+            <Button modifier="quiet" onClick={() => handleDelete(item.rowIdx)} style={{ color: '#737373', padding: '0 8px' }}>
               <Icon icon="md-delete" style={{ fontSize: '22px' }} />
             </Button>
           </div>
