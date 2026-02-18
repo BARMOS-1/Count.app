@@ -165,7 +165,6 @@ const App = () => {
     );
   };
 
-  // --- [画面A] 入力ページ ---
 // --- [画面A] 入力ページ ---
   const renderInputPage = () => {
     const productivity =
@@ -199,7 +198,7 @@ const App = () => {
           flexWrap: 'wrap', // 画面が狭いと自動で上下に並ぶ
           gap: '10px', 
           padding: '10px',
-          backgroundColor: '#f0f2f5' 
+          backgroundColor: '#3e4e5e' 
         }}>
           
           {/* 左側：入力フォーム (幅 600px以上あれば横並び、なければ100%) */}
@@ -316,34 +315,75 @@ const App = () => {
           </div>
           {filterDate && <div style={{marginTop:'8px', fontSize:'0.8rem', color:'#00629d'}}>{filterDate} の履歴: {filteredData.length}件</div>}
         </div>
-        <div style={{ padding: '8px' }}>
-          {filteredData.length === 0 ? (
-            <div style={{padding: '40px', textAlign: 'center', color: '#999'}}><Icon icon="md-calendar-note" size={40} /><br/>履歴がありません</div>
-          ) : (
-            filteredData.map((item, index) => renderHistoryCard(item, index))
-          )}
-        </div>
-        <div style={{height: '50px'}}></div>
-      </Page>
-    );
-  };
-
-  // --- ログイン画面 ---
-  if (!isLoggedIn) {
-    return (
-      <Page>
-        <div className="login-container">
-          <div className="login-card">
-            <div className="login-title">員数管理システム</div>
-            <div className="logo-placeholder"><Icon icon="md-store" style={{fontSize: '50px', color: '#aaa'}} /></div>
-            <input type="password" className="custom-input" placeholder="パスワードを入力" value={password} onChange={(e) => setPassword(e.target.value)} />
-            <button className="login-btn-primary" onClick={handleLogin}>{loading ? "認証中..." : "ログインして開始"}</button>
+        {/* リスト表示部分：ここを修正 */}
+      <div style={{ 
+        padding: '8px', 
+        backgroundColor: '#3e4e5e', // 入力ページと同じ背景色を追加
+        minHeight: '100vh'          // 履歴が少なくても下まで色を塗る
+      }}>
+        {filteredData.length === 0 ? (
+          <div style={{padding: '40px', textAlign: 'center', color: '#999'}}>
+            <Icon icon="md-calendar-note" size={40} /><br/>履歴がありません
           </div>
-          <div className="footer-text">© 2026 KAYAMIND System </div>
+        ) : (
+          filteredData.map((item, index) => renderHistoryCard(item, index))
+        )}
+        {/* 下部タブバーに隠れないための余白 */}
+        <div style={{ height: '100px' }}></div>
+      </div>
+    </Page>
+  );
+};
+
+// --- ログイン画面 ---
+if (!isLoggedIn) {
+  return (
+    <Page>
+      <div className="login-container">
+        {/* メインのカード */}
+        <div className="login-card">
+          {/* 上部の青いバー */}
+          <div className="login-card-header"></div>
+          
+          <div className="login-card-body">
+            <div className="login-title">員数管理システム</div>
+            
+            {/* ロゴエリア */}
+            <div className="logo-area">
+              <img 
+                src="/logo.png" 
+                alt="KAYAMIND SYSTEM" 
+                style={{ width: '180px', height: 'auto', display: 'block', margin: '0 auto' }} 
+              />
+            </div>
+
+            {/* 上側の罫線 */}
+            <hr className="login-divider" />
+
+            <div className="input-label">パスワードを入力</div>
+            <input 
+              type="password" 
+              className="custom-input" 
+              placeholder="Password" 
+              value={password} 
+              onChange={(e) => setPassword(e.target.value)} 
+            />
+            
+            <button className="login-btn-primary" onClick={handleLogin}>
+              {loading ? "認証中..." : "ログインして開始"}
+            </button>
+
+            {/* 下側の罫線 */}
+            <hr className="login-divider" style={{ marginTop: '30px' }} />
+          </div>
         </div>
-      </Page>
-    );
-  }
+
+        {/* コピーライト */}
+        <div className="footer-text">© 2026 KAYAMIND System </div>
+      </div>
+    </Page>
+  );
+}
 
   // --- メイン画面（タブバー） ---
   return (

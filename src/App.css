@@ -1,4 +1,4 @@
-/* 全体の背景 */
+/* 全体の背景：画像に合わせて少し暗めのネイビーグレーに */
 .login-container {
   width: 100vw;
   height: 100vh;
@@ -6,100 +6,108 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #f7f9fc;
-  font-family: -apple-system, "Helvetica Neue", "Helvetica", "Arial", "Lucida Grande", sans-serif;
+  background-color: #3e4e5e; /* 背景を暗くして白カードを際立たせる */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-/* 白いカード */
+/* 白いカード：深い影と境界線 */
 .login-card {
   background: white;
-  padding: 40px 24px;
-  border-radius: 32px; /* 画像のような大きな丸み */
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.04);
-  width: 88%;
-  max-width: 350px;
+  border-radius: 12px; /* 画像のような適度な角丸 */
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3); /* 強く深い影 */
+  width: 90%;
+  max-width: 380px;
+  overflow: hidden; /* ヘッダーの角丸を合わせるため */
+}
+
+/* カード上部の青いバー */
+.login-card-header {
+  height: 45px;
+  background-color: #3498db; /* 鮮やかな青 */
+  width: 100%;
+}
+
+.login-card-body {
+  padding: 30px 24px 40px 24px;
   text-align: center;
 }
 
-/* テキストスタイル */
+/* タイトル */
 .login-title {
-  font-size: 26px;
+  font-size: 22px;
   font-weight: 700;
   color: #333;
-  margin: 0;
+  margin-bottom: 20px;
+  letter-spacing: 0.05em;
 }
 
-.login-subtitle {
-  font-size: 15px;
-  color: #8e8e93;
-  margin-top: 8px;
-  margin-bottom: 24px;
+/* ロゴエリア */
+.logo-area {
+  margin-bottom: 25px;
 }
 
-/* 中央のロゴエリア */
-.logo-placeholder {
+/* 罫線（HR）のカスタマイズ */
+.login-divider {
+  border: none;
+  border-top: 1px solid #eeeeee;
+  margin: 25px 0;
   width: 100%;
-  height: 150px;
-  background-color: #f0f0f0;
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 30px;
 }
 
-/* 入力欄（パスワード） */
+/* 入力ラベル */
+.input-label {
+  text-align: left;
+  font-size: 13px;
+  color: #8e8e93;
+  margin-bottom: 8px;
+  padding-left: 4px;
+}
+
+/* 入力欄 */
 .custom-input {
   width: 100%;
-  height: 60px;
+  height: 50px;
   padding: 0 16px;
-  font-size: 18px;
+  font-size: 16px;
   border: 1px solid #e5e5ea;
-  border-radius: 16px;
-  text-align: center;
-  margin-bottom: 20px;
+  border-radius: 8px;
+  margin-bottom: 10px;
   box-sizing: border-box;
-  background-color: #ffffff;
-  transition: border-color 0.2s;
+  background-color: #f9f9f9;
+  transition: all 0.2s;
 }
 
 .custom-input:focus {
-  border-color: #00629d;
+  border-color: #3498db;
+  background-color: #ffffff;
   outline: none;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
 }
 
 /* ログインボタン */
 .login-btn-primary {
   width: 100%;
-  height: 60px;
-  background-color: #00629d; /* 画像の深い青色 */
+  height: 50px;
+  background-color: #3498db;
   color: white;
   border: none;
-  border-radius: 16px;
-  font-size: 18px;
+  border-radius: 8px;
+  font-size: 16px;
   font-weight: 600;
+  margin-top: 15px;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 98, 157, 0.2);
+  transition: all 0.2s;
 }
 
 .login-btn-primary:active {
-  background-color: #004a77;
-  transform: scale(0.98);
+  background-color: #2980b9;
+  transform: translateY(2px);
 }
 
-/* フッター */
+/* フッターテキスト */
 .footer-text {
-  margin-top: 40px;
+  margin-top: 30px;
   font-size: 13px;
-  color: #aeaeb2;
-}
-
-/* 入力画面用のバッジ */
-.base-badge {
-  background: #00629d;
-  color: white;
-  padding: 6px 16px;
-  border-radius: 20px;
-  font-size: 14px;
-  font-weight: bold;
+  color: #ffffff; /* 背景が暗いので白に変更 */
+  opacity: 0.7;
 }
