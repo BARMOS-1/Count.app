@@ -19,7 +19,7 @@ const App = () => {
   const [remarks, setRemarks] = useState('');
   const [filterDate, setFilterDate] = useState(''); // カレンダー検索用
 
-  const GAS_URL = "https://script.google.com/macros/s/AKfycbwUhOhxeRTXh_1cy5qWd-RVH3qwLya_H7ixARMdr_7273yEV4Q0DzF-eqd-5sdccUd7Iw/exec";
+  const GAS_URL = "https://script.google.com/macros/s/AKfycbxBeIMg0D6MUCv_TqBQCsSnQJaGwVSmhefk9W6UJilIjZkfT0E4OououXSU6yyhFnPLVw/exec";
 
   // --- 1. 履歴取得 ---
   const fetchHistory = async () => {
