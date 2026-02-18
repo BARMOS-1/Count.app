@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <widget xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" id="com.example.helloworld" version="1.0.0">
   <name>Onsen UI v2 React Minimum</name>
-  <description/>
+  <description>Made with Monaca (http://monaca.mobi)</description>
   <author/>
   <content src="index.html"/>
   <allow-navigation href="*"/>
@@ -88,4 +88,6 @@
     <preference name="SplashScreenHeight" value="300"/>
     <preference name="ShowSplashScreen" value="false"/>
   </platform>
+  <preference name="WindowsStorePublisherName" value="My Name"/>
+  <preference name="WindowsStoreIdentityName" value="28017056-77f4-901a-ff78-13b891ed53ad"/>
 </widget>

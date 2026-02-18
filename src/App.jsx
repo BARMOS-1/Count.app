@@ -166,123 +166,121 @@ const App = () => {
   };
 
 // --- [画面A] 入力ページ ---
-  const renderInputPage = () => {
-    const productivity =
-      count && hours && Number(hours) > 0
-        ? (Number(count) / Number(hours)).toFixed(1)
-        : null;
+const renderInputPage = () => {
 
-    const sectionStyle = {
-      marginBottom: '20px',
-      paddingBottom: '15px',
-      borderBottom: '1px solid #e5e5e5'
-    };
 
-    return (
-      <Page>
+  const productivity =
+    count && hours && Number(hours) > 0
+      ? (Number(count) / Number(hours)).toFixed(1)
+      : null;
+
+  return (
+    <Page>
+      <div style={{ 
+        display: 'flex', 
+        flexDirection: 'column', 
+        minHeight: '100vh', 
+        backgroundColor: '#3e4e5e',
+        overflowX: 'hidden'
+      }}>
+        
         {/* タイトルバー */}
-        <div style={{
-          padding: '15px 20px',
-          backgroundColor: '#ffffff',
-          borderBottom: '1px solid #e5e5e5',
-          fontWeight: 'bold',
-          color: '#00629d',
-          fontSize: '1rem'
-        }}>
+        <div style={{ padding: '12px 20px', backgroundColor: '#ffffff', borderBottom: '1px solid #e5e5e5', fontWeight: 'bold', color: '#00629d', fontSize: '0.95rem' }}>
           {editRowIdx ? "【編集モード】内容を修正してください" : "実績入力"}
         </div>
 
-        {/* --- メインコンテンツ：ここをFlexboxに変更 --- */}
-        <div style={{ 
-          display: 'flex', 
-          flexWrap: 'wrap', // 画面が狭いと自動で上下に並ぶ
-          gap: '10px', 
-          padding: '10px',
-          backgroundColor: '#3e4e5e' 
-        }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', padding: '10px', gap: '15px', justifyContent: 'center', alignItems: 'flex-start' }}>
           
-          {/* 左側：入力フォーム (幅 600px以上あれば横並び、なければ100%) */}
-          <div style={{ flex: '1 1 400px', minWidth: '320px' }}>
-            <Card style={{
-              padding: '25px',
-              borderRadius: '18px',
-              boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
-              margin: '10px'
-            }}>
+          {/* 左側：入力フォーム */}
+          <div style={{ flex: '1 1 380px', maxWidth: '450px' }}>
+            <Card style={{ padding: '18px', borderRadius: '15px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)', backgroundColor: '#fff' }}>
+              
               {/* 作業日 */}
-              <div style={sectionStyle}>
-                <div style={{ fontSize: '0.85rem', color: '#666', marginBottom: '6px' }}>作業日</div>
+              <div style={{ marginBottom: '10px', borderBottom: '1px solid #eee', paddingBottom: '8px' }}>
+                <div style={{ fontSize: '0.75rem', color: '#666' }}>作業日</div>
                 <Input type="date" value={date} onChange={(e) => setDate(e.target.value)} style={{ width: '100%' }} />
               </div>
 
               {/* 員数個数 */}
-              <div style={sectionStyle}>
-                <div style={{ fontSize: '0.85rem', color: '#666', marginBottom: '6px' }}>員数個数</div>
+              <div style={{ marginBottom: '10px', borderBottom: '1px solid #eee', paddingBottom: '8px' }}>
+                <div style={{ fontSize: '0.75rem', color: '#666' }}>員数個数</div>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <Input type="number" value={count} onChange={(e) => setCount(e.target.value)} placeholder="例：20"
-                    style={{ width: "100%", fontSize: "1.6rem", fontWeight: "bold", padding: "12px", borderRadius: "12px", border: "1px solid #ddd", backgroundColor: "#fafafa" }}
+                  <Input 
+                    type="number" 
+                    value={count} 
+                    // 入力した瞬間に状態を更新
+                    onChange={(e) => setCount(e.target.value)}
+                    // スマホのキーボード確定を待たずに反応させるため、onInputも併用するとより確実です
+                    onInput={(e) => setCount(e.target.value)}
+                    placeholder="0"
+                    style={{ width: "100%", fontSize: "1.4rem", fontWeight: "bold", padding: "8px", borderRadius: "10px", border: "1px solid #ddd" }}
                   />
-                  <span style={{ marginLeft: '12px' }}>個</span>
+                  <span style={{ marginLeft: '10px', fontWeight: 'bold' }}>個</span>
                 </div>
               </div>
 
               {/* 作業時間 */}
-              <div style={sectionStyle}>
-                <div style={{ fontSize: '0.85rem', color: '#666', marginBottom: '6px' }}>作業時間</div>
+              <div style={{ marginBottom: '10px', borderBottom: '1px solid #eee', paddingBottom: '8px' }}>
+                <div style={{ fontSize: '0.75rem', color: '#666' }}>作業時間</div>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <Input type="number" value={hours} onChange={(e) => setHours(e.target.value)} placeholder="例：15分→0.25h"
-                    style={{ width: "100%", fontSize: "1.6rem", fontWeight: "bold", padding: "12px", borderRadius: "12px", border: "1px solid #ddd", backgroundColor: "#fafafa" }}
+                  <Input 
+                    type="number" 
+                    value={hours} 
+                    step="0.01" // 小数入力をスムーズにする
+                    onChange={(e) => setHours(e.target.value)}
+                    onInput={(e) => setHours(e.target.value)} // リアルタイム反映
+                    placeholder="0.0"
+                    style={{ width: "100%", fontSize: "1.4rem", fontWeight: "bold", padding: "8px", borderRadius: "10px", border: "1px solid #ddd" }}
                   />
-                  <span style={{ marginLeft: '12px' }}>ｈ</span>
+                  <span style={{ marginLeft: '10px', fontWeight: 'bold' }}>ｈ</span>
                 </div>
               </div>
 
-              {/* 生産性表示 */}
-              {productivity && (
-                <div style={{ backgroundColor: '#f4f9ff', padding: '14px', borderRadius: '12px', marginBottom: '20px', textAlign: 'center', border: '1px solid #d9eaff' }}>
-                  <div style={{ fontSize: '0.8rem', color: '#666' }}>1時間あたり</div>
-                  <div style={{ fontSize: '1.6rem', fontWeight: 'bold', color: '#00629d' }}>{productivity} 個</div>
+              {/* 生産性表示（ここが入力中に動くようになります） */}
+              <div style={{ 
+                backgroundColor: productivity ? '#f4f9ff' : '#fafafa', 
+                padding: '12px', 
+                borderRadius: '10px', 
+                marginBottom: '10px', 
+                textAlign: 'center', 
+                border: productivity ? '1px solid #d9eaff' : '1px solid #eee',
+                transition: 'all 0.2s ease' // 変化を滑らかに
+              }}>
+                <div style={{ fontSize: '0.75rem', color: '#666', marginBottom: '2px' }}>1時間あたり</div>
+                <div style={{ fontSize: '1.8rem', fontWeight: 'bold', color: '#3498db' }}>
+                  {productivity ? `${productivity} 個` : '--'}
                 </div>
-              )}
+              </div>
 
-              {/* 備考 */}
-              <div style={{ marginBottom: '25px' }}>
-                <div style={{ fontSize: '0.85rem', color: '#666', marginBottom: '6px' }}>備考</div>
-                <textarea className="textarea" value={remarks} onChange={(e) => setRemarks(e.target.value)}
-                  style={{ width: '100%', height: '80px', padding: '10px', borderRadius: '10px', border: '1px solid #ddd' }}
+              <div style={{ marginBottom: '15px' }}>
+                <textarea className="textarea" value={remarks} onChange={(e) => setRemarks(e.target.value)} placeholder="備考（空欄可）"
+                  style={{ width: '100%', height: '45px', padding: '8px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '0.85rem' }}
                 />
               </div>
 
-              <Button modifier="large" onClick={handleSubmit} disabled={loading} style={{ backgroundColor: editRowIdx ? '#f0ad4e' : '#00629d', borderRadius: '14px' }}>
-                {loading ? <ProgressCircular indeterminate /> : (editRowIdx ? '更新を保存する' : '実績を保存する')}
-              </Button>
-              {editRowIdx && (
-                <Button modifier="large--quiet" onClick={() => { setEditRowIdx(null); setCount(''); setHours(''); setRemarks(''); }} style={{ color: '#777', marginTop: '10px' }}>
-                  キャンセル
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <Button modifier="large" onClick={handleSubmit} disabled={loading} 
+                  style={{ backgroundColor: editRowIdx ? '#f0ad4e' : '#3498db', borderRadius: '12px', height: '48px', fontWeight: 'bold' }}>
+                  {loading ? <ProgressCircular indeterminate /> : (editRowIdx ? '更新を保存する' : '実績を保存する')}
                 </Button>
-              )}
+                {editRowIdx && (
+                  <Button modifier="large--quiet" onClick={() => { setEditRowIdx(null); setCount(''); setHours(''); setRemarks(''); }} style={{ color: '#777', fontSize: '0.85rem' }}>
+                    キャンセル
+                  </Button>
+                )}
+              </div>
             </Card>
           </div>
 
-          {/* 右側：最近の履歴 (幅 300px〜) */}
-          <div style={{ flex: '1 1 300px', minWidth: '320px', display: 'flex', flexDirection: 'column' }}>
-            <div style={{
-              margin: '10px',
-              padding: '10px 15px',
-              backgroundColor: '#fff',
-              borderRadius: '12px 12px 0 0',
-              borderBottom: '2px solid #00629d',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center'
-            }}>
-              <span style={{ fontWeight: 'bold', fontSize: '0.9rem' }}>最近の履歴 (5件)</span>
-              <Button modifier="quiet" onClick={() => setTabIndex(1)} style={{ fontSize: '0.7rem' }}>一覧へ</Button>
+          {/* 右側：最近の履歴 */}
+          <div style={{ flex: '1 1 350px', maxWidth: '450px' }}>
+            <div style={{ padding: '10px 15px', backgroundColor: '#fff', borderRadius: '12px 12px 0 0', borderBottom: '2px solid #3498db', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ fontWeight: 'bold', fontSize: '0.85rem' }}>最近の履歴 (5件)</span>
+              <Button modifier="quiet" onClick={() => setTabIndex(1)} style={{ fontSize: '0.7rem' }}>すべて見る</Button>
             </div>
-            
-            <div style={{ padding: '0 10px', overflowY: 'auto', maxHeight: '70vh' }}>
+            <div style={{ backgroundColor: 'transparent' }}>
               {history.length === 0 ? (
-                <div style={{ padding: '40px', textAlign: 'center', color: '#aaa' }}>履歴なし</div>
+                <div style={{ padding: '20px', textAlign: 'center', color: '#ccc', backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: '0 0 12px 12px' }}>履歴なし</div>
               ) : (
                 history.slice(0, 5).map((item, index) => renderHistoryCard(item, index))
               )}
@@ -290,45 +288,91 @@ const App = () => {
           </div>
 
         </div>
-        <div style={{ height: '70px' }}></div>
-      </Page>
-    );
-  };
+        <div style={{ height: '50px' }}></div>
+      </div>
+    </Page>
+  );
+};
 
 
 
   // --- [画面B] 履歴検索ページ ---
-  const renderHistoryPage = () => {
-    const filteredData = history.filter(item => {
-      if (!filterDate) return true;
-      const selected = filterDate.split('-').slice(1).join('/'); // YYYY-MM-DD -> MM/DD
-      return item.date.startsWith(selected);
-    });
+const renderHistoryPage = () => {
+  const filteredData = history.filter(item => {
+    if (!filterDate) return true;
 
-    return (
-      <Page>
-        <div style={{ padding: '15px', backgroundColor: '#f4f4f4', borderBottom: '1px solid #ddd' }}>
+    try {
+      // 1. カレンダー入力値 (YYYY-MM-DD) を日付オブジェクトに変換
+      const searchDate = new Date(filterDate);
+      
+      // 2. 履歴データ (item.date) を日付オブジェクトに変換
+      // "02/18" だけだと年が補完されない場合があるため、無理やり今年を付与して判定
+      const itemDateStr = item.date.includes('/') ? item.date : item.date; 
+      const itemDate = new Date(itemDateStr);
+
+      // どちらかが無効な日付ならパス
+      if (isNaN(searchDate) || isNaN(itemDate)) {
+        // 文字列として部分一致を試みる（最終手段）
+        const normalizedFilter = filterDate.replace(/-/g, '/');
+        return item.date.includes(normalizedFilter) || item.date.includes(normalizedFilter.substring(5));
+      }
+
+      // 3. 年・月・日がすべて一致するか比較
+      return (
+        searchDate.getFullYear() === itemDate.getFullYear() &&
+        searchDate.getMonth() === itemDate.getMonth() &&
+        searchDate.getDate() === itemDate.getDate()
+      );
+    } catch (e) {
+      return true;
+    }
+  });
+
+  return (
+    <Page>
+      {/* 検索ヘッダーエリア */}
+      <div style={{ backgroundColor: '#f4f4f4', borderBottom: '1px solid #ddd', display: 'flex', justifyContent: 'center' }}>
+        <div style={{ padding: '15px', width: '100%', maxWidth: '600px' }}>
           <div style={{ fontSize: '0.85rem', fontWeight: 'bold', marginBottom: '8px' }}>過去の履歴を検索</div>
           <div style={{ display: 'flex', gap: '10px' }}>
-            <Input type="date" value={filterDate} onChange={(e) => setFilterDate(e.target.value)} style={{ flex: 1, backgroundColor: '#fff', padding: '5px' }} />
-            <Button modifier="outline" onClick={() => setFilterDate('')} style={{ fontSize: '0.8rem' }}>すべて表示</Button>
+            <Input 
+              type="date" 
+              value={filterDate} 
+              onChange={(e) => {
+                console.log("Selected Date:", e.target.value); // デバッグ用
+                setFilterDate(e.target.value);
+              }} 
+              style={{ flex: 1, backgroundColor: '#fff', padding: '5px' }} 
+            />
+            <Button modifier="outline" onClick={() => setFilterDate('')} style={{ fontSize: '0.8rem', borderColor: '#3498db', color: '#3498db' }}>すべて表示</Button>
           </div>
-          {filterDate && <div style={{marginTop:'8px', fontSize:'0.8rem', color:'#00629d'}}>{filterDate} の履歴: {filteredData.length}件</div>}
+          {filterDate && (
+            <div style={{marginTop:'8px', fontSize:'0.8rem', color:'#3498db', fontWeight: 'bold'}}>
+               表示中: {filterDate.replace(/-/g, '/')} （{filteredData.length}件）
+            </div>
+          )}
         </div>
-        {/* リスト表示部分：ここを修正 */}
+      </div>
+
+      {/* リスト表示部分 */}
       <div style={{ 
-        padding: '8px', 
-        backgroundColor: '#3e4e5e', // 入力ページと同じ背景色を追加
-        minHeight: '100vh'          // 履歴が少なくても下まで色を塗る
+        backgroundColor: '#3e4e5e', 
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        padding: '10px'
       }}>
-        {filteredData.length === 0 ? (
-          <div style={{padding: '40px', textAlign: 'center', color: '#999'}}>
-            <Icon icon="md-calendar-note" size={40} /><br/>履歴がありません
-          </div>
-        ) : (
-          filteredData.map((item, index) => renderHistoryCard(item, index))
-        )}
-        {/* 下部タブバーに隠れないための余白 */}
+        <div style={{ width: '100%', maxWidth: '600px' }}>
+          {filteredData.length === 0 ? (
+            <div style={{padding: '60px 40px', textAlign: 'center', color: '#fff', opacity: 0.6}}>
+              <Icon icon="md-calendar-note" size={50} style={{marginBottom:'10px'}} /><br/>
+              その日の履歴は見つかりませんでした
+            </div>
+          ) : (
+            filteredData.map((item, index) => renderHistoryCard(item, index))
+          )}
+        </div>
         <div style={{ height: '100px' }}></div>
       </div>
     </Page>
