@@ -212,10 +212,10 @@ const renderInputPage = () => {
                     onChange={(e) => setCount(e.target.value)}
                     // スマホのキーボード確定を待たずに反応させるため、onInputも併用するとより確実です
                     onInput={(e) => setCount(e.target.value)}
-                    placeholder="0"
+                    placeholder="例:20"
                     style={{ width: "100%", fontSize: "1.4rem", fontWeight: "bold", padding: "8px", borderRadius: "10px", border: "1px solid #ddd" }}
                   />
-                  <span style={{ marginLeft: '10px', fontWeight: 'bold' }}>個</span>
+                  <span style={{ marginLeft: '10px', fontWeight: 'bold' }}>カゴ</span>
                 </div>
               </div>
 
@@ -229,7 +229,7 @@ const renderInputPage = () => {
                     step="0.01" // 小数入力をスムーズにする
                     onChange={(e) => setHours(e.target.value)}
                     onInput={(e) => setHours(e.target.value)} // リアルタイム反映
-                    placeholder="0.0"
+                    placeholder="例:15分→0.25ｈ"
                     style={{ width: "100%", fontSize: "1.4rem", fontWeight: "bold", padding: "8px", borderRadius: "10px", border: "1px solid #ddd" }}
                   />
                   <span style={{ marginLeft: '10px', fontWeight: 'bold' }}>ｈ</span>
