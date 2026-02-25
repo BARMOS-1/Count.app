@@ -20,6 +20,99 @@ const App = () => {
   const [filterDate, setFilterDate] = useState(''); // カレンダー検索用
 
   const GAS_URL = "https://script.google.com/macros/s/AKfycbxBeIMg0D6MUCv_TqBQCsSnQJaGwVSmhefk9W6UJilIjZkfT0E4OououXSU6yyhFnPLVw/exec";
+  
+// --- 軽量カスタムカレンダー ---
+const historyDates = history.map(item => item.date);
+const SimpleCalendar = ({ selectedDate, onChange, historyDates }) => {
+
+  const [currentMonth, setCurrentMonth] = useState(new Date(selectedDate));
+
+  const year = currentMonth.getFullYear();
+  const month = currentMonth.getMonth();
+
+  const firstDay = new Date(year, month, 1);
+  const lastDay = new Date(year, month + 1, 0);
+
+  const startWeekDay = firstDay.getDay();
+  const totalDays = lastDay.getDate();
+
+  const days = [];
+
+  for (let i = 0; i < startWeekDay; i++) {
+    days.push(null);
+  }
+
+  for (let d = 1; d <= totalDays; d++) {
+    days.push(new Date(year, month, d));
+  }
+
+  const formatDate = (dateObj) =>
+    dateObj.toISOString().split('T')[0];
+
+  const todayStr = new Date().toISOString().split('T')[0];
+
+ return (
+        <div
+            style={{
+                background: "#fff",
+                padding: "12px",
+                borderRadius: "12px",
+                width: "100%",        // 幅を100%に固定
+                boxSizing: "border-box", // パディングを幅に含める（重要！）
+                margin: "10px 0",     // 上下の余白のみ
+                border: "1px solid #eee"
+            }}
+        >
+
+      {/* 月ヘッダー */}
+      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "10px" }}>
+        <button onClick={() => setCurrentMonth(new Date(year, month - 1, 1))}>◀</button>
+        <strong>{year}年 {month + 1}月</strong>
+        <button onClick={() => setCurrentMonth(new Date(year, month + 1, 1))}>▶</button>
+      </div>
+
+      {/* 曜日 */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", textAlign: "center", fontSize: "0.8rem" }}>
+        {["日","月","火","水","木","金","土"].map(d => (
+          <div key={d} style={{ fontWeight: "bold" }}>{d}</div>
+        ))}
+      </div>
+
+      {/* 日付 */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: "4px", marginTop: "5px" }}>
+        {days.map((day, index) => {
+
+          if (!day) return <div key={index}></div>;
+
+          const dateStr = formatDate(day);
+          const hasData = historyDates.includes(dateStr);
+          const isToday = dateStr === todayStr;
+          const isSelected = dateStr === selectedDate;
+
+          return (
+            <div
+              key={index}
+              onClick={() => onChange(dateStr)}
+              style={{
+                padding: "6px",
+                borderRadius: "50%",
+                textAlign: "center",
+                cursor: "pointer",
+                background: hasData ? "#3498db" : isSelected ? "#2ecc71" : "transparent",
+                color: hasData ? "#fff" : "#000",
+                border: isToday ? "2px solid #3498db" : "1px solid #eee"
+              }}
+            >
+              {day.getDate()}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+
 
   // --- 1. 履歴取得 ---
   const fetchHistory = async () => {
@@ -192,14 +285,19 @@ const renderInputPage = () => {
         <div style={{ display: 'flex', flexWrap: 'wrap', padding: '10px', gap: '15px', justifyContent: 'center', alignItems: 'flex-start' }}>
           
           {/* 左側：入力フォーム */}
-          <div style={{ flex: '1 1 380px', maxWidth: '450px' }}>
+          <div style={{ flex: '1 1 400px', maxWidth: '450px' }}>
             <Card style={{ padding: '18px', borderRadius: '15px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)', backgroundColor: '#fff' }}>
               
               {/* 作業日 */}
-              <div style={{ marginBottom: '10px', borderBottom: '1px solid #eee', paddingBottom: '8px' }}>
+                <div style={{ marginBottom: '10px', borderBottom: '1px solid #eee', paddingBottom: '8px' }}>
                 <div style={{ fontSize: '0.75rem', color: '#666' }}>作業日</div>
-                <Input type="date" value={date} onChange={(e) => setDate(e.target.value)} style={{ width: '100%' }} />
-              </div>
+
+                <SimpleCalendar
+                    selectedDate={date}
+                    onChange={(newDate) => setDate(newDate)}
+                    historyDates={historyDates}
+                />
+                </div>
 
               {/* 員数個数 */}
               <div style={{ marginBottom: '10px', borderBottom: '1px solid #eee', paddingBottom: '8px' }}>
@@ -332,20 +430,23 @@ const renderHistoryPage = () => {
     <Page>
       {/* 検索ヘッダーエリア */}
       <div style={{ backgroundColor: '#f4f4f4', borderBottom: '1px solid #ddd', display: 'flex', justifyContent: 'center' }}>
-        <div style={{ padding: '15px', width: '100%', maxWidth: '600px' }}>
+        <div style={{ padding: '15px', width: '100%', maxWidth: '450px' }}>
           <div style={{ fontSize: '0.85rem', fontWeight: 'bold', marginBottom: '8px' }}>過去の履歴を検索</div>
-          <div style={{ display: 'flex', gap: '10px' }}>
-            <Input 
-              type="date" 
-              value={filterDate} 
-              onChange={(e) => {
-                console.log("Selected Date:", e.target.value); // デバッグ用
-                setFilterDate(e.target.value);
-              }} 
-              style={{ flex: 1, backgroundColor: '#fff', padding: '5px' }} 
-            />
-            <Button modifier="outline" onClick={() => setFilterDate('')} style={{ fontSize: '0.8rem', borderColor: '#3498db', color: '#3498db' }}>すべて表示</Button>
-          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+             <SimpleCalendar
+                    selectedDate={filterDate || date}
+                    onChange={(newDate) => setFilterDate(newDate)}
+                    historyDates={historyDates}
+                />
+
+                <Button
+                    modifier="outline"
+                    onClick={() => setFilterDate('')}
+                    style={{ fontSize: '0.8rem' }}
+                >
+                    すべて表示
+                </Button>
+                </div>
           {filterDate && (
             <div style={{marginTop:'8px', fontSize:'0.8rem', color:'#3498db', fontWeight: 'bold'}}>
                表示中: {filterDate.replace(/-/g, '/')} （{filteredData.length}件）
@@ -363,7 +464,7 @@ const renderHistoryPage = () => {
         alignItems: 'center',
         padding: '10px'
       }}>
-        <div style={{ width: '100%', maxWidth: '600px' }}>
+        <div style={{ width: '100%', maxWidth: 'px' }}>
           {filteredData.length === 0 ? (
             <div style={{padding: '60px 40px', textAlign: 'center', color: '#fff', opacity: 0.6}}>
               <Icon icon="md-calendar-note" size={50} style={{marginBottom:'10px'}} /><br/>
