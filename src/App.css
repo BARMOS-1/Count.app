@@ -20,12 +20,6 @@
   overflow: hidden; /* ヘッダーの角丸を合わせるため */
 }
 
-/* ツールバーの中央（baseName）のスタイル */
-.navigation-bar__center {
-  font-size: 1.4rem !important;
-  font-weight: bold !important;
-  color: #333; /* お好みの色に調整してください */
-}
 
 /* カード上部の青いバー */
 .login-card-header {

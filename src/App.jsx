@@ -98,9 +98,13 @@ const SimpleCalendar = ({ selectedDate, onChange, historyDates }) => {
                 borderRadius: "50%",
                 textAlign: "center",
                 cursor: "pointer",
-                background: hasData ? "#3498db" : isSelected ? "#2ecc71" : "transparent",
-                color: hasData ? "#fff" : "#000",
-                border: isToday ? "2px solid #3498db" : "1px solid #eee"
+                // ↓ 【修正箇所】isSelected を一番最初に判定します
+                background: isSelected ? "#FA6673" : (hasData ? "#3498db" : "transparent"),
+                // 文字色も選択中またはデータありなら白にする
+                color: (isSelected || hasData) ? "#fff" : "#000",
+                // 今日は枠線をつける
+                border: isToday ? "2px solid #3498db" : "1px solid #eee",
+                fontWeight: isSelected ? "bold" : "normal"
               }}
             >
               {day.getDate()}
@@ -464,7 +468,7 @@ const renderHistoryPage = () => {
         alignItems: 'center',
         padding: '10px'
       }}>
-        <div style={{ width: '100%', maxWidth: 'px' }}>
+        <div style={{ width: '100%', maxWidth: '450px' }}>
           {filteredData.length === 0 ? (
             <div style={{padding: '60px 40px', textAlign: 'center', color: '#fff', opacity: 0.6}}>
               <Icon icon="md-calendar-note" size={50} style={{marginBottom:'10px'}} /><br/>
@@ -530,25 +534,37 @@ if (!isLoggedIn) {
   );
 }
 
-  // --- メイン画面（タブバー） ---
-  return (
-    <Page renderToolbar={() => (
-      <Toolbar>
-        <div className="left"><Button modifier="quiet" onClick={() => setIsLoggedIn(false)}><Icon icon="md-arrow-left" /></Button></div>
-        <div className="center">{baseName}</div>
-      </Toolbar>
-    )}>
-      <Tabbar
-        position='bottom'
-        index={tabIndex}
-        onPreChange={(e) => setTabIndex(e.index)}
-        renderTabs={() => [
-          { content: renderInputPage(), tab: <Tab label="入力" icon="md-edit" /> },
-          { content: renderHistoryPage(), tab: <Tab label="履歴" icon="md-view-list" /> }
-        ]}
-      />
-    </Page>
-  );
+// --- メイン画面（タブバー） ---
+return (
+  <Page renderToolbar={() => (
+    <Toolbar>
+      {/* 左側：矢印ボタンだけにする */}
+      <div className="left">
+        <Button modifier="quiet" onClick={() => setIsLoggedIn(false)}>
+          <Icon icon="md-arrow-left" />
+        </Button>
+      </div>
+      
+      {/* 中央：拠点名。スタイルはここだけで指定 */}
+      <div className="center" style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>
+        {baseName}
+      </div>
+
+      {/* 右側：空（バランスのため） */}
+      <div className="right"></div>
+    </Toolbar>
+  )}>
+    <Tabbar
+      position='bottom'
+      index={tabIndex}
+      onPreChange={(e) => setTabIndex(e.index)}
+      renderTabs={() => [
+        { content: renderInputPage(), tab: <Tab key="tab1" label="入力" icon="md-edit" /> },
+        { content: renderHistoryPage(), tab: <Tab key="tab2" label="履歴" icon="md-view-list" /> }
+      ]}
+    />
+  </Page>
+);
 };
 
 export default App;
