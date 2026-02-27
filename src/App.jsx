@@ -13,7 +13,12 @@ const App = () => {
 
   // --- 入力・検索用ステート ---
   const [editRowIdx, setEditRowIdx] = useState(null);
-  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+  const getTodayStr = () => {
+  const n = new Date();
+  return `${n.getFullYear()}-${String(n.getMonth() + 1).padStart(2, '0')}-${String(n.getDate()).padStart(2, '0')}`;
+};
+
+const [date, setDate] = useState(getTodayStr());
   const [count, setCount] = useState('');
   const [hours, setHours] = useState('');
   const [remarks, setRemarks] = useState('');
@@ -25,7 +30,12 @@ const App = () => {
 const historyDates = history.map(item => item.date);
 const SimpleCalendar = ({ selectedDate, onChange, historyDates }) => {
 
-  const [currentMonth, setCurrentMonth] = useState(new Date(selectedDate));
+  const [currentMonth, setCurrentMonth] = useState(() => {
+  // "YYYY-MM-DD" を分解して数値にする
+  const [y, m, d] = selectedDate.split('-').map(Number);
+  // 月は 0-11 で指定するため m-1
+  return new Date(y, m - 1, d || 1);
+});
 
   const year = currentMonth.getFullYear();
   const month = currentMonth.getMonth();
@@ -46,10 +56,14 @@ const SimpleCalendar = ({ selectedDate, onChange, historyDates }) => {
     days.push(new Date(year, month, d));
   }
 
-  const formatDate = (dateObj) =>
-    dateObj.toISOString().split('T')[0];
+  const formatDate = (dateObj) => {
+  const y = dateObj.getFullYear();
+  const m = String(dateObj.getMonth() + 1).padStart(2, '0');
+  const d = String(dateObj.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+};
 
-  const todayStr = new Date().toISOString().split('T')[0];
+  const todayStr = formatDate(new Date());
 
  return (
         <div
