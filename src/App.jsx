@@ -317,6 +317,27 @@ const renderInputPage = () => {
                 />
                 </div>
 
+                {/* 選択中の日付表示 */}
+                    <div style={{
+                    marginBottom: '10px',
+                    padding: '10px 12px',
+                    borderRadius: '10px',
+                    backgroundColor: '#f4f9ff',
+                    border: '1px solid #d9eaff',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between'
+                    }}>
+                    <div style={{ fontSize: '0.75rem', color: '#666' }}>選択中の日付</div>
+                    <div style={{
+                        fontSize: '1.1rem',
+                        fontWeight: 'bold',
+                        color: '#000'
+                    }}>
+                        {date.replace(/-/g, '/')}
+                    </div>
+                    </div>
+
               {/* 員数個数 */}
               <div style={{ marginBottom: '10px', borderBottom: '1px solid #eee', paddingBottom: '8px' }}>
                 <div style={{ fontSize: '0.75rem', color: '#666' }}>員数個数</div>
@@ -331,7 +352,17 @@ const renderInputPage = () => {
                     placeholder="例:20"
                     style={{ width: "100%", fontSize: "1.4rem", fontWeight: "bold", padding: "8px", borderRadius: "10px", border: "1px solid #ddd" }}
                   />
-                  <span style={{ marginLeft: '10px', fontWeight: 'bold' }}>カゴ</span>
+                  <span 
+                    style={{ 
+                        marginLeft: '8px',
+                        fontWeight: 'bold',
+                        whiteSpace: 'nowrap',   // ← 折り返し禁止
+                        writingMode: 'horizontal-tb', // ← 横書き固定
+                        flexShrink: 0           // ← 縮ませない
+                    }}
+                    >
+                    カゴ
+                    </span>
                 </div>
               </div>
 
@@ -345,10 +376,10 @@ const renderInputPage = () => {
                     step="0.01" // 小数入力をスムーズにする
                     onChange={(e) => setHours(e.target.value)}
                     onInput={(e) => setHours(e.target.value)} // リアルタイム反映
-                    placeholder="例:15分→0.25ｈ"
+                    placeholder="例:15分→0.25ｈ 作業人数の合計値"
                     style={{ width: "100%", fontSize: "1.4rem", fontWeight: "bold", padding: "8px", borderRadius: "10px", border: "1px solid #ddd" }}
                   />
-                  <span style={{ marginLeft: '10px', fontWeight: 'bold' }}>ｈ</span>
+                  <span style={{ marginLeft: '8px', fontWeight: 'bold' }}>ｈ</span>
                 </div>
               </div>
 
