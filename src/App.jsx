@@ -547,7 +547,7 @@ if (!isLoggedIn) {
               <img 
                 src="https://github.com/BARMOS-1/images/blob/main/%E5%B0%8F%E7%89%A9%E5%93%A1%E6%95%B0%E6%A9%9F.jpeg?raw=true" 
                 alt="KAYAMIND SYSTEM" 
-                style={{ width: '350px', height: 'auto', display: 'block', margin: '0 auto' }} 
+                style={{ width: '300px', height: 'auto', display: 'block', margin: '0 auto' }} 
               />
             </div>
 
