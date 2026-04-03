@@ -278,7 +278,12 @@ const SimpleCalendar = ({ selectedDate, onChange, historyDates }) => {
 
 // --- [画面A] 入力ページ ---
 const renderInputPage = () => {
-
+  // 選択中の日付（date）に一致するデータだけを抽出
+  const selectedDayHistory = history.filter(item => {
+    // カレンダーの date (YYYY-MM-DD) と 履歴の item.date (YYYY-MM-DD) を比較
+    // ※形式が異なる場合は .replace(/\//g, '-') などで調整してください
+    return item.date === date;
+  });
 
   const productivity =
     count && hours && Number(hours) > 0
@@ -419,20 +424,44 @@ const renderInputPage = () => {
             </Card>
           </div>
 
-          {/* 右側：最近の履歴 */}
-          <div style={{ flex: '1 1 350px', maxWidth: '450px' }}>
-            <div style={{ padding: '10px 15px', backgroundColor: '#fff', borderRadius: '12px 12px 0 0', borderBottom: '2px solid #3498db', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontWeight: 'bold', fontSize: '0.85rem' }}>最近の履歴 (5件)</span>
-              <Button modifier="quiet" onClick={() => setTabIndex(1)} style={{ fontSize: '0.7rem' }}>すべて見る</Button>
-            </div>
-            <div style={{ backgroundColor: 'transparent' }}>
-              {history.length === 0 ? (
-                <div style={{ padding: '20px', textAlign: 'center', color: '#ccc', backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: '0 0 12px 12px' }}>履歴なし</div>
-              ) : (
-                history.slice(0, 5).map((item, index) => renderHistoryCard(item, index))
-              )}
-            </div>
-          </div>
+        {/* 右側：選択した日の履歴 */}
+<div style={{ flex: '1 1 350px', maxWidth: '450px' }}>
+  <div style={{ 
+    padding: '10px 15px', 
+    backgroundColor: '#fff', 
+    borderRadius: '12px 12px 0 0', 
+    borderBottom: '2px solid #3498db', 
+    display: 'flex', 
+    justifyContent: 'space-between', 
+    alignItems: 'center' 
+  }}>
+    <span style={{ fontWeight: 'bold', fontSize: '0.85rem' }}>
+      {date.replace(/-/g, '/')} の実績 ({selectedDayHistory.length}件)
+    </span>
+    <Button modifier="quiet" onClick={() => setTabIndex(1)} style={{ fontSize: '0.7rem' }}>
+      履歴一覧
+    </Button>
+  </div>
+  
+  <div style={{ backgroundColor: 'transparent' }}>
+    {selectedDayHistory.length === 0 ? (
+      <div style={{ 
+        padding: '30px 20px', 
+        textAlign: 'center', 
+        color: '#eee', 
+        backgroundColor: 'rgba(255,255,255,0.05)', 
+        borderRadius: '0 0 12px 12px',
+        fontSize: '0.8rem',
+        border: '1px dashed rgba(255,255,255,0.2)'
+      }}>
+        この日の登録データはありません
+      </div>
+    ) : (
+      // 選択された日のデータのみを表示
+      selectedDayHistory.map((item, index) => renderHistoryCard(item, index))
+    )}
+  </div>
+</div>
 
         </div>
         <div style={{ height: '50px' }}></div>
