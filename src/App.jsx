@@ -24,7 +24,7 @@ const [date, setDate] = useState(getTodayStr());
   const [remarks, setRemarks] = useState('');
   const [filterDate, setFilterDate] = useState(''); // カレンダー検索用
 
-  const GAS_URL = "https://script.google.com/macros/s/AKfycbxBeIMg0D6MUCv_TqBQCsSnQJaGwVSmhefk9W6UJilIjZkfT0E4OououXSU6yyhFnPLVw/exec";
+  const GAS_URL = "https://script.google.com/macros/s/AKfycbwGpb9khOlOxg6oZiuPpCUvlD5dr3S-4c5HX_USynd-j3K6pE1v_K3GDJjC_KbYRk00HA/exec";
   
 // --- 軽量カスタムカレンダー ---
 const historyDates = history.map(item => item.date);
@@ -461,6 +461,36 @@ const renderInputPage = () => {
       selectedDayHistory.map((item, index) => renderHistoryCard(item, index))
     )}
   </div>
+    <div style={{ marginTop: '20px' }}>
+            <Card
+              // ここに分析ツールのURLを指定します
+              onClick={() => window.open('https://base-maping.web.app', '_blank')}
+              style={{
+                cursor: 'pointer',
+                margin: '0',
+                padding: '16px',
+                borderRadius: '12px',
+                backgroundColor: '#2c3e50', // 画面のトーンに合わせたダークブルー
+                color: '#ffffff',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                border: '1px solid #4a5c6e',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <Icon icon="md-trending-up" size={24} style={{ color: '#4fc3f7' }} />
+                <div>
+                  <div style={{ fontSize: '1rem', fontWeight: 'bold' }}>データ分析ツール</div>
+                  <div style={{ fontSize: '0.75rem', opacity: 0.8, marginTop: '2px', textAlign: 'center' }}>「操作メニュー」→「設備分析」→「小物員数機」</div>
+                   <div style={{ fontSize: '0.75rem', opacity: 0.8, marginTop: '2px' , textAlign: 'center'}}>詳細な作業実績やグラフを確認する</div>
+                </div>
+              </div>
+              <Icon icon="md-chevron-right" size={24} style={{ opacity: 0.7 }} />
+            </Card>
+          </div>
+
 </div>
 
         </div>
