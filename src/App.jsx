@@ -482,8 +482,8 @@ const renderInputPage = () => {
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                 <Icon icon="md-trending-up" size={24} style={{ color: '#4fc3f7' }} />
                 <div>
-                  <div style={{ fontSize: '1rem', fontWeight: 'bold' }}>データ分析ツール</div>
-                  <div style={{ fontSize: '0.75rem', opacity: 0.8, marginTop: '2px', textAlign: 'center' }}>「操作メニュー」→「設備分析」→「小物員数機」</div>
+                  <div style={{ fontSize: '1rem', fontWeight: 'bold' , textAlign: 'center'}}>データ分析ツール</div>
+                  <div style={{ fontSize: '0.75rem', opacity: 0.8, marginTop: '2px', textAlign: 'center' }}>「設備分析」→「小物員数機」→「保有拠点一覧」</div>
                    <div style={{ fontSize: '0.75rem', opacity: 0.8, marginTop: '2px' , textAlign: 'center'}}>詳細な作業実績やグラフを確認する</div>
                 </div>
               </div>
